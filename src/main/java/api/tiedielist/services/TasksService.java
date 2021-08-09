@@ -19,8 +19,8 @@ public class TasksService {
     private Map<UUID, TaskDto> tasks = new HashMap<>();
     private boolean showCompleted = false;
 
-    public void showCompleted() {
-        this.showCompleted = false;
+    public void showCompleted(boolean shouldShowComplete) {
+        this.showCompleted = shouldShowComplete;
     }
 
     public Collection<TaskListDto> getTaskLists() {
@@ -32,7 +32,8 @@ public class TasksService {
         return tasksRepository.insertTaskList(taskList);
     }
 
-    public TaskListDto patchTaskList(TaskListDto taskList) {
+    public TaskListDto patchTaskList(UUID id, TaskListDto taskList) {
+        taskList.setId(id);
         return tasksRepository.updateTaskList(taskList);
     }
 
@@ -44,23 +45,30 @@ public class TasksService {
         return tasksRepository.deleteTaskList(id);
     }
 
-    public Collection<TaskDto> listTasks() {
-        return showCompleted ? tasks.values() : tasks.values().stream().filter(taskDto -> taskDto.isHidden() == false).collect(Collectors.toList());
+    public Collection<TaskDto> getTasks(UUID taskListId) {
+        Collection<TaskDto> tasks = tasksRepository.getTasks(taskListId);
+        return showCompleted ? tasks : tasks.stream().filter(taskDto -> taskDto.isHidden() == false).collect(Collectors.toList());
     }
 
     public TaskDto getTask(UUID taskId) {
         return tasksRepository.getTask(taskId);
     }
 
-    public TaskDto insertTask(TaskDto task) {
-        return tasksRepository.insertTask(task);
+    public TaskDto insertTask(UUID taskListId, TaskDto task) {
+        task.setTaskListId(taskListId);
+        TaskDto newTask = new TaskDto(task);
+        return tasksRepository.insertTask(newTask);
     }
 
-    public TaskDto patchTask(TaskDto task) {
+    public TaskDto patchTask(UUID taskListId, UUID id, TaskDto task) {
+        task.setTaskListId(taskListId);
+        task.setId(id);
         return tasksRepository.updateTask(task);
     }
 
-    public boolean completeTask(TaskDto task) {
+    public boolean completeTask(UUID taskListId, UUID id, TaskDto task) {
+        task.setTaskListId(taskListId);
+        task.setId(id);
         tasksRepository.setTaskComplete(task.getId(), task.isHidden());
         return true;
     }

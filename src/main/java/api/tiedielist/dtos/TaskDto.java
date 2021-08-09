@@ -1,6 +1,6 @@
 package api.tiedielist.dtos;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class TaskDto {
@@ -9,15 +9,15 @@ public class TaskDto {
     private String title;
     private int position;
     private String notes;
-    private Date due;
-    private Date completed;
+    private LocalDateTime due;
+    private LocalDateTime completed;
     private boolean hidden;
 
     public TaskDto() {
 
     }
 
-    public TaskDto(String title, int position, String notes, Date due, Date completed, boolean hidden, UUID taskListId) {
+    public TaskDto(String title, int position, String notes, LocalDateTime due, LocalDateTime completed, boolean hidden, UUID taskListId) {
         this.id = UUID.randomUUID();
         this.taskListId = taskListId;
         this.title = title;
@@ -28,7 +28,7 @@ public class TaskDto {
         this.hidden = hidden;
     }
 
-    public TaskDto(UUID id, UUID taskListId, String title, int position, String notes, Date due, Date completed, boolean hidden) {
+    public TaskDto(UUID id, UUID taskListId, String title, int position, String notes, LocalDateTime due, LocalDateTime completed, boolean hidden) {
         this.id = id;
         this.taskListId = taskListId;
         this.title = title;
@@ -58,19 +58,19 @@ public class TaskDto {
         this.hidden = hidden;
     }
 
-    public Date getCompleted() {
+    public LocalDateTime getCompleted() {
         return completed;
     }
 
-    public void setCompleted(Date completed) {
+    public void setCompleted(LocalDateTime completed) {
         this.completed = completed;
     }
 
-    public Date getDue() {
+    public LocalDateTime getDue() {
         return due;
     }
 
-    public void setDue(Date due) {
+    public void setDue(LocalDateTime due) {
         this.due = due;
     }
 
@@ -96,6 +96,10 @@ public class TaskDto {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public UUID getId() {

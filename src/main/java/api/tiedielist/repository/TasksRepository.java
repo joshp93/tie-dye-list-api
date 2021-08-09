@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -67,7 +68,7 @@ public class TasksRepository {
     public TaskListDto updateTaskList(TaskListDto taskList) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("update_task_list");
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("pId", taskList)
+                .addValue("pId", taskList.getId())
                 .addValue("pTitle", taskList.getTitle());
 
         Map<String, Object> out = simpleJdbcCall.execute(in);
@@ -105,7 +106,7 @@ public class TasksRepository {
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<Object> result = (LinkedCaseInsensitiveMap<Object>) resultsSet.get(0);
             return new TaskDto(UUID.fromString((String) result.get("id")), UUID.fromString((String) result.get("taskListId")), (String) result.get("title"),
-                    (int) result.get("position"), (String) result.get("notes"), (Date) result.get("due"), (Date) result.get("completed"), (boolean) result.get("hidden"));
+                    (int) result.get("position"), (String) result.get("notes"), (LocalDateTime) result.get("due"), (LocalDateTime) result.get("completed"), (boolean) result.get("hidden"));
         } else {
             return null;
         }
@@ -120,7 +121,7 @@ public class TasksRepository {
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<Object> task = (LinkedCaseInsensitiveMap<Object>) resultsSet.get(0);
             return new TaskDto(UUID.fromString((String) task.get("id")), UUID.fromString((String) task.get("taskListId")), (String) task.get("title"),
-                    (int) task.get("position"), (String) task.get("notes"), (Date) task.get("due"), (Date) task.get("completed"), (boolean) task.get("hidden"));
+                    (int) task.get("position"), (String) task.get("notes"), (LocalDateTime) task.get("due"), (LocalDateTime) task.get("completed"), (boolean) task.get("hidden"));
         } else {
             return null;
         }
@@ -128,7 +129,7 @@ public class TasksRepository {
 
     public Collection<TaskDto> getTasks(UUID taskListId) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("get_tasks");
-        SqlParameterSource in = new MapSqlParameterSource().addValue("pTaskListValue", taskListId);
+        SqlParameterSource in = new MapSqlParameterSource().addValue("pTaskListId", taskListId);
 
         Map<String, Object> out = simpleJdbcCall.execute(in);
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
@@ -137,7 +138,7 @@ public class TasksRepository {
             resultsSet.forEach(result -> {
                 LinkedCaseInsensitiveMap<Object> task = (LinkedCaseInsensitiveMap<Object>) result;
                 tasks.add(new TaskDto(UUID.fromString((String) task.get("id")), UUID.fromString((String) task.get("taskListId")), (String) task.get("title"),
-                        (int) task.get("position"), (String) task.get("notes"), (Date) task.get("due"), (Date) task.get("completed"), (boolean) task.get("hidden")));
+                        (int) task.get("position"), (String) task.get("notes"), (LocalDateTime) task.get("due"), (LocalDateTime) task.get("completed"), (boolean) task.get("hidden")));
             });
             return tasks;
         } else {
@@ -162,7 +163,7 @@ public class TasksRepository {
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<Object> result = (LinkedCaseInsensitiveMap<Object>) resultsSet.get(0);
             return new TaskDto(UUID.fromString((String) result.get("id")), UUID.fromString((String) result.get("taskListId")), (String) result.get("title"),
-                    (int) result.get("position"), (String) result.get("notes"), (Date) result.get("due"), (Date) result.get("completed"), (boolean) result.get("hidden"));
+                    (int) result.get("position"), (String) result.get("notes"), (LocalDateTime) result.get("due"), (LocalDateTime) result.get("completed"), (boolean) result.get("hidden"));
         } else {
             return null;
         }
