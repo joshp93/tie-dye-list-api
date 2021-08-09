@@ -7,18 +7,31 @@ public class TaskDto {
     private UUID id;
     private UUID taskListId;
     private String title;
-    private String parent;
     private int position;
     private String notes;
     private Date due;
     private Date completed;
     private boolean hidden;
 
-    public TaskDto(String title, String parent, int position, String notes, String status, Date due, Date completed, boolean hidden, UUID taskListId) {
+    public TaskDto() {
+
+    }
+
+    public TaskDto(String title, int position, String notes, Date due, Date completed, boolean hidden, UUID taskListId) {
         this.id = UUID.randomUUID();
         this.taskListId = taskListId;
         this.title = title;
-        this.parent = parent;
+        this.position = position;
+        this.notes = notes;
+        this.due = due;
+        this.completed = completed;
+        this.hidden = hidden;
+    }
+
+    public TaskDto(UUID id, UUID taskListId, String title, int position, String notes, Date due, Date completed, boolean hidden) {
+        this.id = id;
+        this.taskListId = taskListId;
+        this.title = title;
         this.position = position;
         this.notes = notes;
         this.due = due;
@@ -30,7 +43,6 @@ public class TaskDto {
         this.id = UUID.randomUUID();
         this.taskListId = task.getTaskListId();
         this.title = task.getTitle();
-        this.parent = task.getParent();
         this.position = task.getPosition();
         this.notes = task.getNotes();
         this.due = task.getDue();
@@ -76,14 +88,6 @@ public class TaskDto {
 
     public void setPosition(int position) {
         this.position = position;
-    }
-
-    public String getParent() {
-        return parent;
-    }
-
-    public void setParent(String parent) {
-        this.parent = parent;
     }
 
     public String getTitle() {

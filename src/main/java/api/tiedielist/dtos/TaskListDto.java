@@ -18,6 +18,15 @@ public class TaskListDto {
         this.title = title;
     }
 
+    public TaskListDto(UUID id, String title) {
+        this.id = UUID.randomUUID();
+        this.title = title;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public UUID getId() {
         return id;
     }
