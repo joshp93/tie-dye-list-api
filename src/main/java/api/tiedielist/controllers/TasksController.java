@@ -77,7 +77,7 @@ public class TasksController {
         return tasksService.insertTask(taskListId, task);
     }
 
-    @PatchMapping("lists/{taskListId}/tasks/{taskId}")
+    @PatchMapping("lists/{taskListId}/tasks/{id}")
     @CrossOrigin(origins = { "http://localhost:4200" })
     public TaskDto patchTask(@PathVariable UUID taskListId, @PathVariable UUID id, @RequestBody TaskDto task) {
         return tasksService.patchTask(taskListId, id, task);

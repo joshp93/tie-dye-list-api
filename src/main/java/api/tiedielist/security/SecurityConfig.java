@@ -50,8 +50,8 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http
                 .csrf().disable()
-                .requiresChannel(channel ->
-                        channel.anyRequest().requiresSecure())
+//                .requiresChannel(channel ->
+//                        channel.anyRequest().requiresSecure())
                 .authorizeRequests(authorize ->
                         authorize.antMatchers("/tasks*")
                                 .hasRole("user")

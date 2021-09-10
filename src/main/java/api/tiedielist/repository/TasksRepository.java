@@ -53,16 +53,14 @@ public class TasksRepository {
 
         Map<String, Object> out = simpleJdbcCall.execute(in);
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
+        List<TaskListDto> taskLists = new ArrayList<>();
         if (!resultsSet.isEmpty()) {
-            List<TaskListDto> taskLists = new ArrayList<>();
             resultsSet.forEach(result -> {
                 LinkedCaseInsensitiveMap<String> taskList = (LinkedCaseInsensitiveMap<String>) result;
                 taskLists.add(new TaskListDto(UUID.fromString(taskList.get("id")), taskList.get("title")));
             });
-            return taskLists;
-        } else {
-            return null;
         }
+        return taskLists;
     }
 
     public TaskListDto updateTaskList(TaskListDto taskList) {
@@ -133,17 +131,15 @@ public class TasksRepository {
 
         Map<String, Object> out = simpleJdbcCall.execute(in);
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
+        List<TaskDto> tasks = new ArrayList<>();
         if (!resultsSet.isEmpty()) {
-            List<TaskDto> tasks = new ArrayList<>();
             resultsSet.forEach(result -> {
                 LinkedCaseInsensitiveMap<Object> task = (LinkedCaseInsensitiveMap<Object>) result;
                 tasks.add(new TaskDto(UUID.fromString((String) task.get("id")), UUID.fromString((String) task.get("taskListId")), (String) task.get("title"),
                         (int) task.get("position"), (String) task.get("notes"), (LocalDateTime) task.get("due"), (LocalDateTime) task.get("completed"), (boolean) task.get("hidden")));
             });
-            return tasks;
-        } else {
-            return null;
         }
+        return tasks;
     }
 
     public TaskDto updateTask(TaskDto task) {
