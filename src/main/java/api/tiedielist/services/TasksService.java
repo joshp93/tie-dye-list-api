@@ -19,10 +19,6 @@ public class TasksService {
     private Map<UUID, TaskDto> tasks = new HashMap<>();
     private boolean showCompleted = false;
 
-    public void showCompleted(boolean shouldShowComplete) {
-        this.showCompleted = shouldShowComplete;
-    }
-
     public Collection<TaskListDto> getTaskLists() {
         return tasksRepository.getTaskLists();
     }
@@ -45,7 +41,7 @@ public class TasksService {
         return tasksRepository.deleteTaskList(id);
     }
 
-    public Collection<TaskDto> getTasks(UUID taskListId) {
+    public Collection<TaskDto> getTasks(UUID taskListId, boolean showCompleted) {
         Collection<TaskDto> tasks = tasksRepository.getTasks(taskListId);
         return showCompleted ? tasks : tasks.stream().filter(taskDto -> taskDto.isHidden() == false).collect(Collectors.toList());
     }

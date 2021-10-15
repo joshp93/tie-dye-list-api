@@ -21,12 +21,6 @@ public class TasksController {
         return "Hello everyone";
     }
 
-    @PostMapping("show-complete")
-    @CrossOrigin(origins = { "http://localhost:4200" })
-    public void showCompleteTasks(@RequestBody boolean showComplete) {
-        tasksService.showCompleted(showComplete);
-    }
-
     @GetMapping("lists")
     @CrossOrigin(origins = { "http://localhost:4200" })
     public Collection<TaskListDto> listTaskLists() {
@@ -59,8 +53,8 @@ public class TasksController {
 
     @GetMapping("lists/{taskListId}/tasks")
     @CrossOrigin(origins = { "http://localhost:4200" })
-    public Collection<TaskDto> listTasks(@PathVariable UUID taskListId) {
-        return tasksService.getTasks(taskListId);
+    public Collection<TaskDto> listTasks(@PathVariable UUID taskListId, @RequestParam boolean showCompletedTasks) {
+        return tasksService.getTasks(taskListId, showCompletedTasks);
     }
 
     @GetMapping("lists/{taskListId}/tasks/{taskId}")
