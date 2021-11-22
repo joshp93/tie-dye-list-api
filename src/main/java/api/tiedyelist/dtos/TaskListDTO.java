@@ -1,24 +1,24 @@
-package api.tiedielist.dtos;
+package api.tiedyelist.dtos;
 
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
-public class TaskListDto {
+public class TaskListDTO {
     private UUID id;
     private String title;
 
-    public TaskListDto() {
+    public TaskListDTO() {
 
     }
 
-    public TaskListDto(String title) {
+    public TaskListDTO(String title) {
         this.id = UUID.randomUUID();
         this.title = title;
     }
 
-    public TaskListDto(UUID id, String title) {
+    public TaskListDTO(UUID id, String title) {
         this.id = id;
         this.title = title;
     }

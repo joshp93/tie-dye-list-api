@@ -1,9 +1,9 @@
-package api.tiedielist.dtos;
+package api.tiedyelist.dtos;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class TaskDto {
+public class TaskDTO {
     private UUID id;
     private UUID taskListId;
     private String title;
@@ -13,11 +13,11 @@ public class TaskDto {
     private LocalDateTime completed;
     private boolean hidden;
 
-    public TaskDto() {
+    public TaskDTO() {
 
     }
 
-    public TaskDto(String title, int position, String notes, LocalDateTime due, LocalDateTime completed, boolean hidden, UUID taskListId) {
+    public TaskDTO(String title, int position, String notes, LocalDateTime due, LocalDateTime completed, boolean hidden, UUID taskListId) {
         this.id = UUID.randomUUID();
         this.taskListId = taskListId;
         this.title = title;
@@ -28,7 +28,7 @@ public class TaskDto {
         this.hidden = hidden;
     }
 
-    public TaskDto(UUID id, UUID taskListId, String title, int position, String notes, LocalDateTime due, LocalDateTime completed, boolean hidden) {
+    public TaskDTO(UUID id, UUID taskListId, String title, int position, String notes, LocalDateTime due, LocalDateTime completed, boolean hidden) {
         this.id = id;
         this.taskListId = taskListId;
         this.title = title;
@@ -39,7 +39,7 @@ public class TaskDto {
         this.hidden = hidden;
     }
 
-    public TaskDto(TaskDto task) {
+    public TaskDTO(TaskDTO task) {
         this.id = UUID.randomUUID();
         this.taskListId = task.getTaskListId();
         this.title = task.getTitle();

@@ -1,7 +1,7 @@
-package api.tiedielist.repository;
+package api.tiedyelist.repository;
 
-import api.tiedielist.dtos.TaskDto;
-import api.tiedielist.dtos.TaskListDto;
+import api.tiedyelist.dtos.TaskDTO;
+import api.tiedyelist.dtos.TaskListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,7 +18,7 @@ public class TasksRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public TaskListDto insertTaskList(TaskListDto taskList) {
+    public TaskListDTO insertTaskList(TaskListDTO taskList) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("insert_task_list");
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("pId", taskList.getId())
@@ -27,13 +27,13 @@ public class TasksRepository {
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<String> result = (LinkedCaseInsensitiveMap<String>) resultsSet.get(0);
-            return new TaskListDto(UUID.fromString(result.get("id")), result.get("title"));
+            return new TaskListDTO(UUID.fromString(result.get("id")), result.get("title"));
         } else {
             return null;
         }
     }
 
-    public TaskListDto getTaskList(UUID id) {
+    public TaskListDTO getTaskList(UUID id) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("get_task_list");
         SqlParameterSource in = new MapSqlParameterSource().addValue("pId", id);
 
@@ -41,29 +41,29 @@ public class TasksRepository {
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<String> result = (LinkedCaseInsensitiveMap<String>) resultsSet.get(0);
-            return new TaskListDto(UUID.fromString(result.get("id")), result.get("title"));
+            return new TaskListDTO(UUID.fromString(result.get("id")), result.get("title"));
         } else {
             return null;
         }
     }
 
-    public Collection<TaskListDto> getTaskLists() {
+    public Collection<TaskListDTO> getTaskLists() {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("get_task_lists");
         SqlParameterSource in = new MapSqlParameterSource();
 
         Map<String, Object> out = simpleJdbcCall.execute(in);
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
-        List<TaskListDto> taskLists = new ArrayList<>();
+        List<TaskListDTO> taskLists = new ArrayList<>();
         if (!resultsSet.isEmpty()) {
             resultsSet.forEach(result -> {
                 LinkedCaseInsensitiveMap<String> taskList = (LinkedCaseInsensitiveMap<String>) result;
-                taskLists.add(new TaskListDto(UUID.fromString(taskList.get("id")), taskList.get("title")));
+                taskLists.add(new TaskListDTO(UUID.fromString(taskList.get("id")), taskList.get("title")));
             });
         }
         return taskLists;
     }
 
-    public TaskListDto updateTaskList(TaskListDto taskList) {
+    public TaskListDTO updateTaskList(TaskListDTO taskList) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("update_task_list");
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("pId", taskList.getId())
@@ -73,7 +73,7 @@ public class TasksRepository {
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<String> result = (LinkedCaseInsensitiveMap<String>) resultsSet.get(0);
-            return new TaskListDto(UUID.fromString(result.get("id")), result.get("title"));
+            return new TaskListDTO(UUID.fromString(result.get("id")), result.get("title"));
         } else {
             return null;
         }
@@ -87,7 +87,7 @@ public class TasksRepository {
         return true;
     }
 
-    public TaskDto insertTask(TaskDto task) {
+    public TaskDTO insertTask(TaskDTO task) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("insert_task");
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("pId", task.getId())
@@ -103,14 +103,14 @@ public class TasksRepository {
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<Object> result = (LinkedCaseInsensitiveMap<Object>) resultsSet.get(0);
-            return new TaskDto(UUID.fromString((String) result.get("id")), UUID.fromString((String) result.get("taskListId")), (String) result.get("title"),
+            return new TaskDTO(UUID.fromString((String) result.get("id")), UUID.fromString((String) result.get("taskListId")), (String) result.get("title"),
                     (int) result.get("position"), (String) result.get("notes"), (LocalDateTime) result.get("due"), (LocalDateTime) result.get("completed"), (boolean) result.get("hidden"));
         } else {
             return null;
         }
     }
 
-    public TaskDto getTask(UUID id) {
+    public TaskDTO getTask(UUID id) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("get_task");
         SqlParameterSource in = new MapSqlParameterSource().addValue("pId", id);
         Map<String, Object> out = simpleJdbcCall.execute(in);
@@ -118,31 +118,31 @@ public class TasksRepository {
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<Object> task = (LinkedCaseInsensitiveMap<Object>) resultsSet.get(0);
-            return new TaskDto(UUID.fromString((String) task.get("id")), UUID.fromString((String) task.get("taskListId")), (String) task.get("title"),
+            return new TaskDTO(UUID.fromString((String) task.get("id")), UUID.fromString((String) task.get("taskListId")), (String) task.get("title"),
                     (int) task.get("position"), (String) task.get("notes"), (LocalDateTime) task.get("due"), (LocalDateTime) task.get("completed"), (boolean) task.get("hidden"));
         } else {
             return null;
         }
     }
 
-    public Collection<TaskDto> getTasks(UUID taskListId) {
+    public Collection<TaskDTO> getTasks(UUID taskListId) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("get_tasks");
         SqlParameterSource in = new MapSqlParameterSource().addValue("pTaskListId", taskListId);
 
         Map<String, Object> out = simpleJdbcCall.execute(in);
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
-        List<TaskDto> tasks = new ArrayList<>();
+        List<TaskDTO> tasks = new ArrayList<>();
         if (!resultsSet.isEmpty()) {
             resultsSet.forEach(result -> {
                 LinkedCaseInsensitiveMap<Object> task = (LinkedCaseInsensitiveMap<Object>) result;
-                tasks.add(new TaskDto(UUID.fromString((String) task.get("id")), UUID.fromString((String) task.get("taskListId")), (String) task.get("title"),
+                tasks.add(new TaskDTO(UUID.fromString((String) task.get("id")), UUID.fromString((String) task.get("taskListId")), (String) task.get("title"),
                         (int) task.get("position"), (String) task.get("notes"), (LocalDateTime) task.get("due"), (LocalDateTime) task.get("completed"), (boolean) task.get("hidden")));
             });
         }
         return tasks;
     }
 
-    public TaskDto updateTask(TaskDto task) {
+    public TaskDTO updateTask(TaskDTO task) {
         SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate.getDataSource()).withProcedureName("update_task");
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("pId", task.getId())
@@ -158,7 +158,7 @@ public class TasksRepository {
         List<Object> resultsSet = (List<Object>) out.get("#result-set-1");
         if (!resultsSet.isEmpty()) {
             LinkedCaseInsensitiveMap<Object> result = (LinkedCaseInsensitiveMap<Object>) resultsSet.get(0);
-            return new TaskDto(UUID.fromString((String) result.get("id")), UUID.fromString((String) result.get("taskListId")), (String) result.get("title"),
+            return new TaskDTO(UUID.fromString((String) result.get("id")), UUID.fromString((String) result.get("taskListId")), (String) result.get("title"),
                     (int) result.get("position"), (String) result.get("notes"), (LocalDateTime) result.get("due"), (LocalDateTime) result.get("completed"), (boolean) result.get("hidden"));
         } else {
             return null;

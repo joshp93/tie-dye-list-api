@@ -1,8 +1,8 @@
-package api.tiedielist.services;
+package api.tiedyelist.services;
 
-import api.tiedielist.dtos.TaskDto;
-import api.tiedielist.dtos.TaskListDto;
-import api.tiedielist.repository.TasksRepository;
+import api.tiedyelist.dtos.TaskDTO;
+import api.tiedyelist.dtos.TaskListDTO;
+import api.tiedyelist.repository.TasksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,25 +15,25 @@ public class TasksService {
     @Autowired
     TasksRepository tasksRepository;
 
-    private Map<UUID, TaskListDto> taskLists = new HashMap<>();
-    private Map<UUID, TaskDto> tasks = new HashMap<>();
+    private Map<UUID, TaskListDTO> taskLists = new HashMap<>();
+    private Map<UUID, TaskDTO> tasks = new HashMap<>();
     private boolean showCompleted = false;
 
-    public Collection<TaskListDto> getTaskLists() {
+    public Collection<TaskListDTO> getTaskLists() {
         return tasksRepository.getTaskLists();
     }
 
-    public TaskListDto insertTaskList(String title) {
-        TaskListDto taskList = new TaskListDto(title);
+    public TaskListDTO insertTaskList(String title) {
+        TaskListDTO taskList = new TaskListDTO(title);
         return tasksRepository.insertTaskList(taskList);
     }
 
-    public TaskListDto patchTaskList(UUID id, TaskListDto taskList) {
+    public TaskListDTO patchTaskList(UUID id, TaskListDTO taskList) {
         taskList.setId(id);
         return tasksRepository.updateTaskList(taskList);
     }
 
-    public TaskListDto getTaskList(UUID id) {
+    public TaskListDTO getTaskList(UUID id) {
         return tasksRepository.getTaskList(id);
     }
 
@@ -41,28 +41,28 @@ public class TasksService {
         return tasksRepository.deleteTaskList(id);
     }
 
-    public Collection<TaskDto> getTasks(UUID taskListId, boolean showCompleted) {
-        Collection<TaskDto> tasks = tasksRepository.getTasks(taskListId);
-        return showCompleted ? tasks : tasks.stream().filter(taskDto -> taskDto.isHidden() == false).collect(Collectors.toList());
+    public Collection<TaskDTO> getTasks(UUID taskListId, boolean showCompleted) {
+        Collection<TaskDTO> tasks = tasksRepository.getTasks(taskListId);
+        return showCompleted ? tasks : tasks.stream().filter(taskDTO -> taskDTO.isHidden() == false).collect(Collectors.toList());
     }
 
-    public TaskDto getTask(UUID taskId) {
+    public TaskDTO getTask(UUID taskId) {
         return tasksRepository.getTask(taskId);
     }
 
-    public TaskDto insertTask(UUID taskListId, TaskDto task) {
+    public TaskDTO insertTask(UUID taskListId, TaskDTO task) {
         task.setTaskListId(taskListId);
-        TaskDto newTask = new TaskDto(task);
+        TaskDTO newTask = new TaskDTO(task);
         return tasksRepository.insertTask(newTask);
     }
 
-    public TaskDto patchTask(UUID taskListId, UUID id, TaskDto task) {
+    public TaskDTO patchTask(UUID taskListId, UUID id, TaskDTO task) {
         task.setTaskListId(taskListId);
         task.setId(id);
         return tasksRepository.updateTask(task);
     }
 
-    public boolean completeTask(UUID taskListId, UUID id, TaskDto task) {
+    public boolean completeTask(UUID taskListId, UUID id, TaskDTO task) {
         task.setTaskListId(taskListId);
         task.setId(id);
         tasksRepository.setTaskComplete(task.getId(), task.isHidden());
